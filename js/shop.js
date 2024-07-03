@@ -122,11 +122,30 @@ function calculateTotal() {
     }
     return total;
 }
+calculateTotal()
 
 // Exercise 4
-function applyPromotionsCart() {
+function applyPromotionsCart(cart) {
     // Apply promotions to each item in the array "cart"
+
+    for (let i = 0; i < cart.length; i++) {
+        let product = cart[i];
+        
+        if (productInfo && productInfo.offer) {
+            let offer = productInfo.offer;
+            
+            if (product.quantity >= offer.number) {
+                product.subtotalWithDiscount = product.price * product.quantity * (1 - offer.percent / 100);
+            } else {
+                delete product.subtotalWithDiscount;
+            }
+        } else {
+            delete product.subtotalWithDiscount;
+        }
+    }
 }
+
+applyPromotionsCart();
 
 // Exercise 5
 function printCart() {
