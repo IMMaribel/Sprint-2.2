@@ -102,12 +102,17 @@ function buy(id) {
             cart.push({ ...product, quantity: 1 });
         }
     }
+
+    applyPromotionsCart()
+    printCart()
+
 }
 
 // Exercise 2
 function cleanCart() {
     
     cart = [];
+    printCart()
 
 }
 
@@ -122,7 +127,6 @@ function calculateTotal() {
     }
     return total;
 }
-calculateTotal()
 
 // Exercise 4
 function applyPromotionsCart() {
@@ -131,8 +135,8 @@ function applyPromotionsCart() {
     for (let i = 0; i < cart.length; i++) {
         let product = cart[i];
         
-        if (productInfo && productInfo.offer) {
-            let offer = productInfo.offer;
+        if (product.offer) {
+            let offer = product.offer;
 
             if (product.quantity >= offer.number) {
                 product.subtotalWithDiscount = product.price * product.quantity * (1 - offer.percent / 100);
@@ -145,11 +149,34 @@ function applyPromotionsCart() {
     }
 }
 
-applyPromotionsCart();
-
 // Exercise 5
 function printCart() {
     // Fill the shopping cart modal manipulating the shopping cart dom
+
+    let cartItems = document.getElementById('cart_list');
+    let totalPriceElement = document.getElementById('total_price');
+    
+    cartItems.innerHTML = '';
+    let totalPrice = 0;
+
+    for (let i = 0; i < cart.length; i++) {
+        let product = cart[i];
+        let subtotal = product.price * product.quantity;
+        let subtotalWithDiscount = product.subtotalWithDiscount || subtotal;
+            totalPrice += subtotalWithDiscount;
+
+        let row = `
+        <tr>
+            <th scoop="row">${product.name}</th>
+            <td>${product.price.toFixed(2)}$</td>
+            <td>${product.quantity}</td>
+            <td>${subtotalWithDiscount.toFixed(2)}$</td>
+        </tr>
+        `;
+        cartItems.insertAdjacentHTML('beforeend', row);
+    }
+
+    totalPriceElement.textContent = totalPrice.toFixed(2);
 }
 
 
