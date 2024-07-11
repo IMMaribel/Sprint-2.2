@@ -185,6 +185,27 @@ function printCart() {
 // Exercise 7
 function removeFromCart(id) {
 
+    let product = -1;
+    // Buscar el product por id en el array cart
+    for (let i = 0; i < cart.length; i++) {
+        if (cart[i].id === id) {
+            product = i;
+            break;
+        }
+    }
+
+    // Si el indice de product no es igual a -1 (se encuentra el producto)
+    if (product !== -1) {
+       // Si hay más de una una unidad, se reduce a -1
+        if (cart[product].quantity > 1){
+            cart [product].quantity -= 1;
+        } else { // Si solo hay una unidad, se elimina de cart
+            cart.splice(product, 1);
+        }
+    }
+
+    applyPromotionsCart();
+    printCart()
 }
 
 function open_modal() {
